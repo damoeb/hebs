@@ -6,18 +6,22 @@ hebsApp.controller('NoteController', function ($scope, Note) {
     $scope.$isLastPage = true;
     $scope.$isFirstPage = true;
 
+    var postProcResult = function(result) {
+        $scope.$isLastPage = result.lastPage;
+        $scope.$isFirstPage = result.firstPage;
+        $scope.currentPage = result.number;
+
+        // group by days
+        $scope.byDays = _.groupBy(result.content, function(note) {
+            return moment(note.createdDate).format('dddd, DD.MM.YYYY');
+        });
+    };
+
     var loadCurrentPage = function () {
         console.log("load current page");
 
         Note.query({page: $scope.currentPage}, function (result) {
-            $scope.$isLastPage = result.lastPage;
-            $scope.$isFirstPage = result.firstPage;
-            $scope.currentPage = result.number;
-
-            // group by days
-            $scope.byDays = _.groupBy(result.content, function(note) {
-                return moment(note.createdDate).format('dddd, DD.MM.YYYY');
-            });
+           postProcResult(result)
         });
     };
 
@@ -37,6 +41,13 @@ hebsApp.controller('NoteController', function ($scope, Note) {
     };
 
     loadCurrentPage();
+
+    $scope.search = function() {
+        console.log('search', $scope.query);
+        Note.query({page: $scope.currentPage, query: $scope.query}, function(result) {
+            postProcResult(result);
+        })
+    };
 
     $scope.create = function () {
         Note.save($scope.note,

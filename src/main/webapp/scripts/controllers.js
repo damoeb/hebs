@@ -2,9 +2,6 @@
 
 /* Controllers */
 
-hebsApp.controller('MainController', function ($scope) {
-    });
-
 hebsApp.controller('AdminController', function ($scope) {
     });
 

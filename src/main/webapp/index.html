@@ -15,47 +15,57 @@
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
     </head>
-    <body ng-app="hebsApp" ng-controller="MainController">
+    <body ng-app="hebsApp" ng-controller="NoteController">
         <!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <!-- Content -->
-        <div class="container-fluid">
-            <div ng-view=""></div>
-        </div>
-
         <!-- Menu -->
         <div class="container-fluid" ng-switch="authenticated">
             <div class="row">
+                <div class="col-xs-4">
+                    <form ng-submit="search()">
+                        <input type="text" class="form-control" name="query" placeholder="Type.." ng-model="query">
+                    </form>
 
-                <a href="javascript:void(0)" data-toggle="modal" data-target="#saveNoteModal" ng-switch-when="true">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </a>
+                </div>
+                <div class="col-xs-8">
 
-                <div class="dropdown pointer" style="display: inline-block">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#saveNoteModal" ng-switch-when="true">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+
+                    <div class="dropdown pointer" style="display: inline-block">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
                         <span>
                             <span class=" glyphicon glyphicon-cog"></span>
                         </span>
-                    </a>
-                    <ul class="dropdown-menu" ng-controller="MenuController">
-                        <li ng-switch-when="true"><a href="#/settings"><span class="glyphicon glyphicon-wrench"></span>
-                            &nbsp;<span translate="global.menu.account.settings">Settings</span></a></li>
-                        <li ng-switch-when="true"><a href="#/password"><span class="glyphicon glyphicon-lock"></span>
-                            &nbsp;<span translate="global.menu.account.password">Password</span></a></li>
-                        <li ng-switch-when="true"><a href="#/sessions"><span class="glyphicon glyphicon-cloud"></span>
-                            &nbsp;<span translate="global.menu.account.sessions">Sessions</span></a></li>
-                        <li ng-switch-when="true"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span>
-                            &nbsp;<span translate="global.menu.account.logout">Log out</span></a></li>
-                        <li ng-switch-when="false"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
-                            &nbsp;<span translate="global.menu.account.login">Authenticate</span></a></li>
+                        </a>
+                        <ul class="dropdown-menu" ng-controller="MenuController">
+                            <li ng-switch-when="true"><a href="#/settings"><span class="glyphicon glyphicon-wrench"></span>
+                                &nbsp;<span translate="global.menu.account.settings">Settings</span></a></li>
+                            <li ng-switch-when="true"><a href="#/password"><span class="glyphicon glyphicon-lock"></span>
+                                &nbsp;<span translate="global.menu.account.password">Password</span></a></li>
+                            <li ng-switch-when="true"><a href="#/sessions"><span class="glyphicon glyphicon-cloud"></span>
+                                &nbsp;<span translate="global.menu.account.sessions">Sessions</span></a></li>
+                            <li ng-switch-when="true"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span>
+                                &nbsp;<span translate="global.menu.account.logout">Log out</span></a></li>
+                            <li ng-switch-when="false"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
+                                &nbsp;<span translate="global.menu.account.login">Authenticate</span></a></li>
 
-                        <!--<li ng-switch-when="false"><a href="#/register"><span class="glyphicon glyphicon-plus-sign"></span>-->
+                            <!--<li ng-switch-when="false"><a href="#/register"><span class="glyphicon glyphicon-plus-sign"></span>-->
                             <!--&nbsp;<span translate="global.menu.account.register">Register</span></a></li>-->
-                    </ul>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
+        </div>
+
+
+        <!-- Content -->
+        <div class="container-fluid">
+            <div ng-view=""></div>
         </div>
 
         <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.

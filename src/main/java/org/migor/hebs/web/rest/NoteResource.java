@@ -1,6 +1,7 @@
 package org.migor.hebs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.apache.commons.lang3.StringUtils;
 import org.migor.hebs.domain.Note;
 import org.migor.hebs.repository.NoteRepository;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Optional;
@@ -46,11 +48,23 @@ public class NoteResource {
      * GET  /rest/notes -> get all the notes.
      */
     @RequestMapping(value = "/rest/notes",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public Page<Note> getAll(@QueryParam("page") Integer page) {
+    public Page<Note> getAll(@QueryParam("page") Integer page, @QueryParam("query") String query) {
         log.debug("REST request to get all Notes");
+
+        PageRequest pageRequest = getPageRequest(page);
+
+        if(StringUtils.isBlank(query)) {
+            return noteRepository.findAll(pageRequest);
+        } else {
+            return noteRepository.findByQuery(query, pageRequest);
+        }
+
+    }
+
+    private PageRequest getPageRequest(Integer page) {
 
         if (page == null || page < 0) {
             page = 0;
@@ -59,9 +73,7 @@ public class NoteResource {
         Sort sort = new Sort(
             new Sort.Order(Sort.Direction.ASC, "createdDate")
         );
-        PageRequest pageable = new PageRequest(page, 40, sort);
-
-        return noteRepository.findAll(pageable);
+        return new PageRequest(page, 40, sort);
     }
 
     /**
