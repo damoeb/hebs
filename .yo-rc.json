@@ -1,0 +1,18 @@
+{
+  "generator-jhipster": {
+    "baseName": "hebs",
+    "packageName": "org.migor.hebs",
+    "packageFolder": "org/migor/hebs",
+    "authenticationType": "token",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "nosql",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "8"
+  }
+}
