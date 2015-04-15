@@ -1,6 +1,4 @@
-extend note with body_html, private/public flag
+gridfs to store binary data
 
 ff addon to grab markup with images
 http://kb.mozillazine.org/Getting_started_with_extension_development
-
-gridfs to store binary data
