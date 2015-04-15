@@ -1,0 +1,10 @@
+see https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Getting_started
+
+# Test Addon
+cpx run
+
+# Package
+cfx xpi
+
+# Context Menu
+https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/context-menu
