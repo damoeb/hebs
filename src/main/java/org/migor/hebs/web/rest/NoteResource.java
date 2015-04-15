@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,9 @@ public class NoteResource {
 
     @Inject
     private NoteRepository noteRepository;
+    // see http://jeviathon.com/2012/08/14/why-you-should-be-using-mongodbgridfs-and-spring-data/
+    @Inject
+    private GridFsOperations gridOperations;
 
     /**
      * POST  /rest/notes -> Create a new note.
@@ -54,12 +58,39 @@ public class NoteResource {
     public Page<Note> getAll(@QueryParam("page") Integer page, @QueryParam("query") String query) {
         log.debug("REST request to get all Notes");
 
+        return getAll(page, query, false);
+    }
+
+    /**
+     * GET  /rest/notes -> get all the notes.
+     */
+    @RequestMapping(value = "/rest/notes/public",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public Page<Note> getAllPublic(@QueryParam("page") Integer page, @QueryParam("query") String query) {
+        log.debug("REST request to get all public Notes");
+
+        return getAll(page, query, true);
+    }
+
+    public Page<Note> getAll(Integer page, String query, boolean publicOnly) {
+        log.debug("REST request to get all public Notes");
+
         PageRequest pageRequest = getPageRequest(page);
 
-        if(StringUtils.isBlank(query)) {
-            return noteRepository.findAll(pageRequest);
+        if(publicOnly) {
+            if (StringUtils.isBlank(query)) {
+                return noteRepository.findByInPublic(true, pageRequest);
+            } else {
+                return noteRepository.findByInPublicAndQuery(true, query, pageRequest);
+            }
         } else {
-            return noteRepository.findByQuery(query, pageRequest);
+            if(StringUtils.isBlank(query)) {
+                return noteRepository.findAll(pageRequest);
+            } else {
+                return noteRepository.findByQuery(query, pageRequest);
+            }
         }
 
     }
@@ -71,7 +102,7 @@ public class NoteResource {
         }
 
         Sort sort = new Sort(
-            new Sort.Order(Sort.Direction.ASC, "createdDate")
+            new Sort.Order(Sort.Direction.DESC, "createdDate")
         );
         return new PageRequest(page, 40, sort);
     }

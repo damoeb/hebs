@@ -12,6 +12,7 @@ hebsApp.controller('NoteController', function ($scope, Note) {
         $scope.currentPage = result.number;
 
         // group by days
+        // todo sort the days
         $scope.byDays = _.groupBy(result.content, function(note) {
             return moment(note.createdDate).format('dddd, DD.MM.YYYY');
         });
@@ -58,7 +59,7 @@ hebsApp.controller('NoteController', function ($scope, Note) {
             });
     };
 
-    $scope.update = function (id) {
+    $scope.updateDialog = function (id) {
         $scope.note = Note.get({id: id});
         $('#saveNoteModal').modal('show');
     };

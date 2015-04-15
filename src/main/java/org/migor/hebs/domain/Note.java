@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -26,11 +27,20 @@ public class Note implements Serializable {
     @Field("content")
     private String content;
 
+    @Field("content_html")
+    private String contentHtml;
+
     @Field("owner")
     private String owner;
 
+    @Field("in_public")
+    private boolean inPublic;
+
     @CreatedDate
     private DateTime createdDate;
+
+    @LastModifiedDate
+    private DateTime lastModifiedDate;
 
     public String getId() {
         return id;
@@ -70,6 +80,30 @@ public class Note implements Serializable {
 
     public void setCreatedDate(DateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getContentHtml() {
+        return contentHtml;
+    }
+
+    public void setContentHtml(String contentHtml) {
+        this.contentHtml = contentHtml;
+    }
+
+    public boolean isInPublic() {
+        return inPublic;
+    }
+
+    public void setInPublic(boolean inPublic) {
+        this.inPublic = inPublic;
+    }
+
+    public DateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(DateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

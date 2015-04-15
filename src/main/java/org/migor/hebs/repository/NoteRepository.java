@@ -17,4 +17,9 @@ public interface NoteRepository extends MongoRepository<Note, String> {
     // todo fix $text search query
     @Query(value = "{ $text: { $search: '?0' } }")
     Page<Note> findByQuery(String query, Pageable pageable);
+    @Query(value = "{ $text: { $search: '?0' } }")
+    Page<Note> findByInPublicAndQuery(boolean inPublic, String query, Pageable pageable);
+
+    Page<Note> findByInPublic(boolean inPublic, Pageable pageable);
+
 }
