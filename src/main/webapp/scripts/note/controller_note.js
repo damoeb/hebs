@@ -1,10 +1,14 @@
 'use strict';
 
-hebsApp.controller('NoteController', function ($scope, Note) {
+hebsApp.controller('NoteController', function ($scope, $rootScope, Note) {
 
     $scope.currentPage = 0;
     $scope.$isLastPage = true;
     $scope.$isFirstPage = true;
+
+    $scope.formatDate = function(date) {
+        return moment(parseFloat(date)).format('dddd, DD.MM.YYYY')
+    };
 
     var postProcResult = function(result) {
         $scope.$isLastPage = result.lastPage;
@@ -12,18 +16,45 @@ hebsApp.controller('NoteController', function ($scope, Note) {
         $scope.currentPage = result.number;
 
         // group by days
-        // todo sort the days
-        $scope.byDays = _.groupBy(result.content, function(note) {
-            return moment(note.createdDate).format('dddd, DD.MM.YYYY');
+        var groups = _.groupBy(result.content, function(note) {
+            //return moment(note.createdDate).format('DD.MM.YYYY');
+            return parseInt(note.createdDate/10000000)*10000000;
+        });
+
+        $scope.sortedDays = _.sortBy(_.keys(groups), function (createdDate) {
+            return -1 * createdDate
+        });
+
+        //console.log(_.keys(groups));
+
+        $scope.byDays = {};
+
+        _.forEach($scope.sortedDays, function (createdDate) {
+            $scope.byDays[createdDate] = groups[createdDate];
+        });
+
+        //console.log(_.keys($scope.byDays))
+    };
+
+    var __doLoad = function(data) {
+
+        var params = {page: $scope.currentPage};
+
+        if (!$rootScope.authenticated) {
+            params['id'] = 'public';
+        }
+
+        Note.query(params, function (result) {
+            postProcResult(result)
         });
     };
+
+    $scope.$on('event:auth-loginConfirmed', __doLoad);
 
     var loadCurrentPage = function () {
         console.log("load current page");
 
-        Note.query({page: $scope.currentPage}, function (result) {
-           postProcResult(result)
-        });
+        __doLoad()
     };
 
     // -- Scope Functions -- ---------------------------------------------------------------------------------------
@@ -56,6 +87,7 @@ hebsApp.controller('NoteController', function ($scope, Note) {
                 $scope.notes = Note.query();
                 $('#saveNoteModal').modal('hide');
                 $scope.clear();
+                loadCurrentPage();
             });
     };
 

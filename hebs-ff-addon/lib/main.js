@@ -1,5 +1,4 @@
 // hint: to grab even protected images, wrap with a form to send the markup
-
 require('sdk/context-menu').Item({
     label: 'Hebes',
     contentScript: 'self.on("click", function (node, data) {' +
@@ -25,22 +24,8 @@ require('sdk/context-menu').Item({
     onMessage: function (html) {
         console.log(html);
 
-//        var http = new XMLHttpRequest();
-//        var url = "get_data.php";
-//        var params = "lorem=ipsum&name=binny";
-//        http.open("POST", url, true);
-//
-////Send the proper header information along with the request
-//        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//        http.setRequestHeader("Content-length", params.length);
-//        http.setRequestHeader("Connection", "close");
-//
-//        http.onreadystatechange = function() {//Call a function when the state changes.
-//            if(http.readyState == 4 && http.status == 200) {
-//                alert(http.responseText);
-//            }
-//        }
-//        http.send(params);
+        require('sdk/tabs').open('http://localhost:8080/rest/note');
+
     }
 });
 

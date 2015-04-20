@@ -1,4 +1,19 @@
+nach save liste bzw note nachladen
+
+finish ff-addon
+import/export: use mongo import/export?
+
+stream concept um public streams zu teilen?
+
+
+id->note url
+
+mongo $text search
 gridfs to store binary data
+
+modules, support multiuser
 
 ff addon to grab markup with images
 http://kb.mozillazine.org/Getting_started_with_extension_development
+
+copy css style

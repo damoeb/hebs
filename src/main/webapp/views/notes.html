@@ -53,9 +53,9 @@
         </div>
     </div>
 
-    <div ng-repeat="(day, notes) in byDays">
+    <div ng-repeat="day in sortedDays" ng-init="notes = byDays[day]">
 
-        <strong>{{day}}</strong>
+        <h4>{{ formatDate(day) }}</h4>
 
         <li ng-repeat="note in notes">
             <div style="white-space: pre-wrap">{{note.content}}</div>

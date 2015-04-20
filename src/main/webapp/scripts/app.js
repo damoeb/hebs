@@ -132,7 +132,8 @@ hebsApp
             httpHeaders = $httpProvider.defaults.headers;
         })
         .run(function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
-                $rootScope.authenticated = false;
+                $rootScope.authenticated = undefined;
+                console.log('authenticated undefined');
                 $rootScope.$on('$routeChangeStart', function (event, next) {
                     $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
                     $rootScope.userRoles = USER_ROLES;
@@ -142,6 +143,7 @@ hebsApp
                 // Call when the the client is confirmed
                 $rootScope.$on('event:auth-loginConfirmed', function(data) {
                     $rootScope.authenticated = true;
+                    console.log('authenticated true');
                     if ($location.path() === "/login") {
                         var search = $location.search();
                         if (search.redirect !== undefined) {
@@ -156,6 +158,7 @@ hebsApp
                 $rootScope.$on('event:auth-loginRequired', function(rejection) {
                     Session.invalidate();
                     $rootScope.authenticated = false;
+                    console.log('authenticated false');
                     if ($location.path() !== "/" && $location.path() !== "" && $location.path() !== "/register" &&
                             $location.path() !== "/activate" && $location.path() !== "/login") {
                         var redirect = $location.path();
