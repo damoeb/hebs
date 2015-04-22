@@ -21,11 +21,11 @@ hebsApp.controller('NoteController', function ($scope, $rootScope, Note) {
             return parseInt(note.createdDate/10000000)*10000000;
         });
 
+        // todo does not work for search
+
         $scope.sortedDays = _.sortBy(_.keys(groups), function (createdDate) {
             return -1 * createdDate
         });
-
-        //console.log(_.keys(groups));
 
         $scope.byDays = {};
 
@@ -33,7 +33,7 @@ hebsApp.controller('NoteController', function ($scope, $rootScope, Note) {
             $scope.byDays[createdDate] = groups[createdDate];
         });
 
-        //console.log(_.keys($scope.byDays))
+        console.log($scope.byDays);
     };
 
     var __doLoad = function(data) {
