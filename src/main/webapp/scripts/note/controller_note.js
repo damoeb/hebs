@@ -1,27 +1,52 @@
 'use strict';
 
-hebsApp.controller('NoteController', function ($scope, $rootScope, Note) {
+hebsApp.controller('NoteController', function ($scope, $location, $routeParams, $rootScope, Note) {
 
-    $scope.currentPage = 0;
+    $scope.currentPage = 1;
     $scope.$isLastPage = true;
     $scope.$isFirstPage = true;
 
-    $scope.formatDate = function(date) {
-        return moment(parseFloat(date)).format('dddd, DD.MM.YYYY')
+    // suche + pagination
+    // ?q=[..]&page=1
+
+    // standard + pagination
+    // ?page=1
+
+    var getQuery = function () {
+
+        var query = $location.search().query;
+        var page = $location.search().page;
+
+        if (_.isUndefined(page)) {
+            page = 0;
+        }
+
+        var params = {
+            page: page
+        };
+
+        if (!$rootScope.authenticated) {
+            params['id'] = 'public';
+        }
+
+        if (!_.isUndefined(query)) {
+            params['query'] = query;
+        }
+
+        return params;
     };
 
-    var postProcResult = function(result) {
+    var handleResponse = function (result) {
+
         $scope.$isLastPage = result.lastPage;
         $scope.$isFirstPage = result.firstPage;
         $scope.currentPage = result.number;
 
         // group by days
-        var groups = _.groupBy(result.content, function(note) {
+        var groups = _.groupBy(result.content, function (note) {
             //return moment(note.createdDate).format('DD.MM.YYYY');
-            return parseInt(note.createdDate/10000000)*10000000;
+            return parseInt(note.createdDate / 10000000) * 10000000;
         });
-
-        // todo does not work for search
 
         $scope.sortedDays = _.sortBy(_.keys(groups), function (createdDate) {
             return -1 * createdDate
@@ -32,53 +57,35 @@ hebsApp.controller('NoteController', function ($scope, $rootScope, Note) {
         _.forEach($scope.sortedDays, function (createdDate) {
             $scope.byDays[createdDate] = groups[createdDate];
         });
-
-        console.log($scope.byDays);
     };
 
-    var __doLoad = function(data) {
-
-        var params = {page: $scope.currentPage};
-
-        if (!$rootScope.authenticated) {
-            params['id'] = 'public';
-        }
-
-        Note.query(params, function (result) {
-            postProcResult(result)
+    if (!_.isUndefined($rootScope.authenticated)) {
+        Note.query(getQuery(), function (response) {
+            handleResponse(response)
         });
+    }
+
+    $scope.formatDate = function(date) {
+        return moment(parseFloat(date)).format('dddd, DD.MM.YYYY')
     };
-
-    $scope.$on('event:auth-loginConfirmed', __doLoad);
-
-    var loadCurrentPage = function () {
-        console.log("load current page");
-
-        __doLoad()
-    };
-
-    // -- Scope Functions -- ---------------------------------------------------------------------------------------
 
     $scope.nextPage = function () {
         if(!$scope.$isLastPage) {
             $scope.currentPage ++;
-            loadCurrentPage();
+            // todo change url
         }
     };
     $scope.previousPage = function () {
         if(!$scope.$isFirstPage) {
             $scope.currentPage --;
-            loadCurrentPage();
+            // todo change url
         }
     };
 
-    loadCurrentPage();
-
     $scope.search = function() {
         console.log('search', $scope.query);
-        Note.query({page: $scope.currentPage, query: $scope.query}, function(result) {
-            postProcResult(result);
-        })
+
+        $location.search('query', $scope.query);
     };
 
     $scope.create = function () {

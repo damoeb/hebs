@@ -9,7 +9,7 @@ hebs is a web-based, minimalistic knowledge base tool, I am using to evaluate an
 Requirements
 ------------
 
-mongodb 3.0.2 +
+mongodb 2.6 + (full text support per default)
 
 
 Features
