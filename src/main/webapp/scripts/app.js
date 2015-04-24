@@ -108,9 +108,15 @@ hebsApp
                         authorizedRoles: [USER_ROLES.admin]
                     }
                 })
-                .otherwise({
+                .when('/u/:userId', {
                     templateUrl: 'views/notes.html',
                     controller: 'NoteController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
+                .otherwise({
+                    templateUrl: 'views/main.html',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
                     }

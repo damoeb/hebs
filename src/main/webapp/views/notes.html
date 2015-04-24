@@ -77,14 +77,14 @@
 
     <div>
         <ul class="pagination">
-            <a href="#/?page={{currentPage -1}}" aria-label="Previous" ng-click="previousPage()"
+            <a href="#{{previousPageUrl()}}" aria-label="Previous"
                ng-show="!$isFirstPage">
                 <span aria-hidden="true">Previous</span>
             </a>
 
             Page {{currentPage}}
 
-            <a href="#/?page={{currentPage +1}}" aria-label="Next" ng-click="nextPage()" ng-show="!$isLastPage">
+            <a href="#{{nextPageUrl()}}" aria-label="Next" ng-show="!$isLastPage">
                 <span aria-hidden="true">Next</span>
             </a>
     </div>

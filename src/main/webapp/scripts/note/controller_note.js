@@ -5,11 +5,15 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
     var query = $location.search().query;
     var page = $location.search().page;
 
+    console.log('of user "', $routeParams.userId, '"');
+
     if (_.isUndefined(page)) {
-        $scope.currentPage = 1;
+        $scope.currentPage = 0;
     } else {
-        $scope.currentPage = page;
+        $scope.currentPage = parseInt(page);
     }
+
+    console.log('on page', $scope.currentPage);
 
     $scope.$isLastPage = true;
     $scope.$isFirstPage = true;
@@ -83,17 +87,35 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
         return moment(parseFloat(date)).format('dddd, DD.MM.YYYY')
     };
 
-    $scope.nextPage = function () {
-        if(!$scope.$isLastPage) {
-            // todo disable page refresh
-            $location.search('page', $scope.currentPage + 1);
+    var toQueryString = function (parameters) {
+        var queryString = _.reduce(
+            parameters,
+            function (components, value, key) {
+                components.push(key + '=' + encodeURIComponent(value));
+                return components;
+            },
+            []
+        ).join('&');
+        if (queryString.length > 0) {
+            queryString = '?' + queryString;
         }
+        return queryString;
     };
-    $scope.previousPage = function () {
-        if(!$scope.$isFirstPage) {
-            // todo disable page refresh
-            $location.search('page', $scope.currentPage - 1);
-        }
+
+    var getPageUrl = function (page) {
+        var path = $location.path();
+        var search = _.create($location.search());
+        search['page'] = page;
+
+        return path + toQueryString(search);
+    };
+
+    $scope.nextPageUrl = function () {
+        return getPageUrl($scope.currentPage + 1);
+    };
+
+    $scope.previousPageUrl = function () {
+        return getPageUrl($scope.currentPage - 1);
     };
 
     $scope.search = function() {
