@@ -57,6 +57,9 @@
 
             <div ng-show="authenticated" style="display: inline-block;">
 
+                <span class="glyphicon glyphicon-eye-open" style="color: green" ng-if="note.inPublic"></span>
+                <span class="glyphicon glyphicon-eye-close" ng-if="!note.inPublic"></span>
+
                 <a href="javascript:void(0)"
                    ng-click="updateDialog(note.id)">
                     Edit

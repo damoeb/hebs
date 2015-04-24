@@ -1,7 +1,6 @@
 Build fixen inkl module
 support multiuser
 
-nach save liste bzw note nachladen
 
 finish ff-addon
 import/export: use mongo import/export?
