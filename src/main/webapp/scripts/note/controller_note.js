@@ -2,7 +2,12 @@
 
 hebsApp.controller('NoteController', function ($scope, $location, $routeParams, $rootScope, Note) {
 
-    $scope.currentPage = 1;
+    if (_.isUndefined($location.search().page)) {
+        $scope.currentPage = 1;
+    } else {
+        $scope.currentPage = $location.search().page;
+    }
+
     $scope.$isLastPage = true;
     $scope.$isFirstPage = true;
 
@@ -16,10 +21,6 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
 
         var query = $location.search().query;
         var page = $location.search().page;
-
-        if (_.isUndefined(page)) {
-            page = 0;
-        }
 
         var params = {
             page: page
@@ -59,11 +60,18 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
         });
     };
 
-    if (!_.isUndefined($rootScope.authenticated)) {
-        Note.query(getQuery(), function (response) {
-            handleResponse(response)
-        });
-    }
+    var refresh = function () {
+        if (!_.isUndefined($rootScope.authenticated)) {
+            Note.query(getQuery(), function (response) {
+                handleResponse(response)
+            });
+        } else {
+            // todo is called twice
+            $scope.$on('event:auth-loginConfirmed', refresh);
+        }
+    };
+
+    refresh();
 
     $scope.formatDate = function(date) {
         return moment(parseFloat(date)).format('dddd, DD.MM.YYYY')
@@ -71,14 +79,12 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
 
     $scope.nextPage = function () {
         if(!$scope.$isLastPage) {
-            $scope.currentPage ++;
-            // todo change url
+            $location.search('page', $scope.currentPage + 1);
         }
     };
     $scope.previousPage = function () {
         if(!$scope.$isFirstPage) {
-            $scope.currentPage --;
-            // todo change url
+            $location.search('page', $scope.currentPage - 1);
         }
     };
 
@@ -94,7 +100,7 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
                 $scope.notes = Note.query();
                 $('#saveNoteModal').modal('hide');
                 $scope.clear();
-                loadCurrentPage();
+                refresh();
             });
     };
 
