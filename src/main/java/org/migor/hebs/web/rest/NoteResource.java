@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.migor.hebs.domain.Note;
 import org.migor.hebs.repository.NoteRepository;
+import org.migor.hebs.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,7 @@ public class NoteResource {
     @Timed
     public void create(@RequestBody Note note) {
         log.debug("REST request to save Note : {}", note);
+        note.setOwner(SecurityUtils.getCurrentLogin());
         noteRepository.save(note);
     }
 

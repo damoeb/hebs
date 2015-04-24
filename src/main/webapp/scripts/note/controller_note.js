@@ -1,32 +1,11 @@
 'use strict';
 
-hebsApp.controller('NoteController', function ($scope, $location, $routeParams, $rootScope, Note) {
+hebsApp.controller('NoteController', function ($scope, $location, $routeParams, $rootScope, Note, User) {
 
-    var query = $location.search().query;
+    $scope.query = $location.search().query;
     var page = $location.search().page;
 
-    console.log('of user "', $routeParams.userId, '"');
-
-    if (_.isUndefined(page)) {
-        $scope.currentPage = 0;
-    } else {
-        $scope.currentPage = parseInt(page);
-    }
-
-    console.log('on page', $scope.currentPage);
-
-    $scope.$isLastPage = true;
-    $scope.$isFirstPage = true;
-
-    // suche + pagination
-    // ?q=[..]&page=1
-
-    // standard + pagination
-    // ?page=1
-
-    if (!_.isUndefined(query)) {
-        $scope.query = query;
-    }
+    var userId = $routeParams.userId;
 
     var getQuery = function () {
 
@@ -38,8 +17,8 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
             params['id'] = 'public';
         }
 
-        if (!_.isUndefined(query)) {
-            params['query'] = query;
+        if (!_.isUndefined($scope.query)) {
+            params['query'] = $scope.query;
         }
 
         return params;
@@ -81,7 +60,39 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
         }
     };
 
-    refresh();
+
+    $scope.init = function() {
+
+        if (_.isUndefined(userId)) {
+            // todo error
+            console.error('userId is undefined');
+            return;
+        }
+
+        if (_.isUndefined(page)) {
+            $scope.currentPage = 0;
+        } else {
+            $scope.currentPage = parseInt(page);
+        }
+
+        console.log('on page', $scope.currentPage);
+
+        $scope.$isLastPage = true;
+        $scope.$isFirstPage = true;
+
+        // suche + pagination
+        // ?q=[..]&page=1
+
+        // standard + pagination
+        // ?page=1
+
+        console.log('of user "', userId, '"');
+
+        User.get({id: userId}, function() {
+            refresh();
+        });
+
+    };
 
     $scope.formatDate = function(date) {
         return moment(parseFloat(date)).format('dddd, DD.MM.YYYY')
@@ -118,8 +129,20 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
         return getPageUrl($scope.currentPage - 1);
     };
 
-    $scope.search = function() {
-        console.log('search', $scope.query);
+    var codes = {
+        ESC: 27
+    };
+
+    $scope.changedQuery = function($event) {
+
+        if($event.keyCode == codes.ESC) {
+            $scope.query = ''
+        }
+        //console.log($event.keyCode);
+    };
+
+    $scope.submitQuery = function() {
+        console.log('search for', $scope.query);
 
         $location.search('query', $scope.query);
     };
