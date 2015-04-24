@@ -2,10 +2,13 @@
 
 hebsApp.controller('NoteController', function ($scope, $location, $routeParams, $rootScope, Note) {
 
-    if (_.isUndefined($location.search().page)) {
+    var query = $location.search().query;
+    var page = $location.search().page;
+
+    if (_.isUndefined(page)) {
         $scope.currentPage = 1;
     } else {
-        $scope.currentPage = $location.search().page;
+        $scope.currentPage = page;
     }
 
     $scope.$isLastPage = true;
@@ -17,10 +20,11 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
     // standard + pagination
     // ?page=1
 
-    var getQuery = function () {
+    if (!_.isUndefined(query)) {
+        $scope.query = query;
+    }
 
-        var query = $location.search().query;
-        var page = $location.search().page;
+    var getQuery = function () {
 
         var params = {
             page: page
@@ -37,14 +41,16 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
         return params;
     };
 
-    var handleResponse = function (result) {
+    var handleResponse = function (response) {
 
-        $scope.$isLastPage = result.lastPage;
-        $scope.$isFirstPage = result.firstPage;
-        $scope.currentPage = result.number;
+        console.log('response', response.content.length, 'hits on page', response.number);
+
+        $scope.$isLastPage = response.lastPage;
+        $scope.$isFirstPage = response.firstPage;
+        $scope.currentPage = response.number;
 
         // group by days
-        var groups = _.groupBy(result.content, function (note) {
+        var groups = _.groupBy(response.content, function (note) {
             //return moment(note.createdDate).format('DD.MM.YYYY');
             return parseInt(note.createdDate / 10000000) * 10000000;
         });
@@ -79,11 +85,13 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
 
     $scope.nextPage = function () {
         if(!$scope.$isLastPage) {
+            // todo disable page refresh
             $location.search('page', $scope.currentPage + 1);
         }
     };
     $scope.previousPage = function () {
         if(!$scope.$isFirstPage) {
+            // todo disable page refresh
             $location.search('page', $scope.currentPage - 1);
         }
     };

@@ -104,7 +104,7 @@ public class NoteResource {
         Sort sort = new Sort(
             new Sort.Order(Sort.Direction.DESC, "createdDate")
         );
-        return new PageRequest(page, 1, sort);
+        return new PageRequest(page, 20, sort);
     }
 
     /**
