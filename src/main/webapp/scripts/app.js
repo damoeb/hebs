@@ -23,13 +23,6 @@ hebsApp
                         authorizedRoles: [USER_ROLES.all]
                     }
                 })
-                .when('/login', {
-                    templateUrl: 'views/login.html',
-                    controller: 'LoginController',
-                    access: {
-                        authorizedRoles: [USER_ROLES.all]
-                    }
-                })
                 .when('/error', {
                     templateUrl: 'views/error.html',
                     access: {
@@ -115,8 +108,16 @@ hebsApp
                         authorizedRoles: [USER_ROLES.all]
                     }
                 })
+                .when('/login', {
+                    templateUrl: 'views/login.html',
+                    controller: 'LoginController',
+                    access: {
+                        authorizedRoles: [USER_ROLES.all]
+                    }
+                })
                 .otherwise({
-                    templateUrl: 'views/main.html',
+                    templateUrl: 'views/login.html',
+                    controller: 'LoginController',
                     access: {
                         authorizedRoles: [USER_ROLES.all]
                     }
@@ -150,12 +151,14 @@ hebsApp
                 $rootScope.$on('event:auth-loginConfirmed', function(data) {
                     $rootScope.authenticated = true;
                     console.log('authenticated true');
-                    if ($location.path() === "/login") {
+                    if ($location.path() === "/login" || _.isEmpty($location.path())) {
                         var search = $location.search();
                         if (search.redirect !== undefined) {
                             $location.path(search.redirect).search('redirect', null).replace();
                         } else {
-                            $location.path('/').replace();
+                            //$location.path('/u/'+Account.get().login).replace();
+                            $location.path('/u/' + Session.login).replace();
+                            //$location.path('/u/admin').replace();
                         }
                     }
                 });

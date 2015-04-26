@@ -15,62 +15,12 @@
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
     </head>
-    <body ng-app="hebsApp" ng-controller="NoteController">
+<body ng-app="hebsApp">
         <!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <!-- Menu -->
         <div class="container-fluid" ng-switch="authenticated">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="input-group">
-
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveNoteModal" ng-switch-when="true">
-                                Create
-                            </button>
-                        </div><!-- /btn-group -->
-
-                        <form ng-submit="submitQuery()" class="input-group">
-                            <input type="text" class="form-control" aria-label="..." name="query" placeholder="Type.." ng-model="query" ng-keyup="changedQuery($event)">
-
-                            <div class="input-group-btn">
-                                <input type="submit" class="btn btn-primary" value="Search" />
-                            </div>
-                        </form>
-
-                        <div class="input-group-btn dropdown-menu-right">
-
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class=" glyphicon glyphicon-cog"></span>
-                            </button>
-
-                            <ul class="dropdown-menu dropdown-menu-right" ng-controller="MenuController">
-                                <li ng-switch-when="true"><a href="#/settings"><span class="glyphicon glyphicon-wrench"></span>
-                                    &nbsp;<span translate="global.menu.account.settings">Settings</span></a></li>
-                                <li ng-switch-when="true"><a href="#/password"><span class="glyphicon glyphicon-lock"></span>
-                                    &nbsp;<span translate="global.menu.account.password">Password</span></a></li>
-                                <li ng-switch-when="true"><a href="#/sessions"><span class="glyphicon glyphicon-cloud"></span>
-                                    &nbsp;<span translate="global.menu.account.sessions">Sessions</span></a></li>
-                                <li ng-switch-when="true"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span>
-                                    &nbsp;<span translate="global.menu.account.logout">Log out</span></a></li>
-                                <li ng-switch-when="false"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
-                                    &nbsp;<span translate="global.menu.account.login">Authenticate</span></a></li>
-
-                                <!--<li ng-switch-when="false"><a href="#/register"><span class="glyphicon glyphicon-plus-sign"></span>-->
-                                <!--&nbsp;<span translate="global.menu.account.register">Register</span></a></li>-->
-                            </ul>
-                        </div><!-- /btn-group -->
-
-                    </div>
-            </div>
-
-        </div>
-
-
-        <!-- Content -->
-        <div class="container-fluid">
             <div ng-view=""></div>
         </div>
 

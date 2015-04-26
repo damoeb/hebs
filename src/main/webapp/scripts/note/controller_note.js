@@ -35,12 +35,14 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
         // group by days
         var groups = _.groupBy(response.content, function (note) {
             //return moment(note.createdDate).format('DD.MM.YYYY');
-            return parseInt(note.createdDate / 10000000) * 10000000;
+            return parseInt(note.createdDate / 100000000) * 100000000;
         });
 
         $scope.sortedDays = _.sortBy(_.keys(groups), function (createdDate) {
             return -1 * createdDate
         });
+
+        console.log($scope.sortedDays);
 
         $scope.byDays = {};
 
