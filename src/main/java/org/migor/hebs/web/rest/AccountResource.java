@@ -64,23 +64,23 @@ public class AccountResource {
     /**
      * POST  /rest/register -> register the user.
      */
-    @RequestMapping(value = "/rest/register",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<?> registerAccount(@RequestBody UserDTO userDTO, HttpServletRequest request,
-                                             HttpServletResponse response) {
-        return Optional.ofNullable(userRepository.findOne(userDTO.getLogin()))
-            .map(user -> new ResponseEntity<>(HttpStatus.NOT_MODIFIED))
-            .orElseGet(() -> {
-                User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
-                        userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
-                        userDTO.getLangKey());
-                final Locale locale = Locale.forLanguageTag(user.getLangKey());
-                String content = createHtmlContentFromTemplate(user, locale, request, response);
-                mailService.sendActivationEmail(user.getEmail(), content, locale);
-                return new ResponseEntity<>(HttpStatus.CREATED);});
-    }
+//    @RequestMapping(value = "/rest/register",
+//            method = RequestMethod.POST,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    @Timed
+//    public ResponseEntity<?> registerAccount(@RequestBody UserDTO userDTO, HttpServletRequest request,
+//                                             HttpServletResponse response) {
+//        return Optional.ofNullable(userRepository.findOne(userDTO.getLogin()))
+//            .map(user -> new ResponseEntity<>(HttpStatus.NOT_MODIFIED))
+//            .orElseGet(() -> {
+//                User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
+//                        userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail().toLowerCase(),
+//                        userDTO.getLangKey());
+//                final Locale locale = Locale.forLanguageTag(user.getLangKey());
+//                String content = createHtmlContentFromTemplate(user, locale, request, response);
+//                mailService.sendActivationEmail(user.getEmail(), content, locale);
+//                return new ResponseEntity<>(HttpStatus.CREATED);});
+//    }
     /**
      * GET  /rest/activate -> activate the registered user.
      */
