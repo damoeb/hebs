@@ -42,7 +42,7 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
             return -1 * createdDate
         });
 
-        console.log($scope.sortedDays);
+        //console.log($scope.sortedDays);
 
         $scope.byDays = {};
 
@@ -146,7 +146,7 @@ hebsApp.controller('NoteController', function ($scope, $location, $routeParams, 
     $scope.submitQuery = function() {
         console.log('search for', $scope.query);
 
-        $location.search('query', $scope.query);
+        $location.search({'query': $scope.query, 'page': null});
     };
 
     $scope.create = function () {
