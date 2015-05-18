@@ -3,9 +3,9 @@
         <div class="input-group">
 
             <div class="input-group-btn">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveNoteModal">
+                <a href="#/note/new" class="btn btn-primary">
                     Create
-                </button>
+                </a>
             </div>
             <!-- /btn-group -->
 
@@ -50,54 +50,6 @@
 
 <div>
 
-    <div class="modal fade" id="saveNoteModal" tabindex="-1" role="dialog" aria-labelledby="myNoteLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form name="form" role="form" novalidate
-                      class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
-                      ng-submit="create()">
-
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                                ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myNoteLabel">
-                            Note
-
-                            {{note.id}}
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="form-group">
-                            by {{note.owner}}
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-control">
-                                <input type="checkbox" aria-label="Public" ng-model="note.inPublic"> Public
-                            </label>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Content</label>
-                            <textarea class="form-control" ng-model="note.content" rows="12">
-                            </textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                        </button>
-                        <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary">
-                            <span class="glyphicon glyphicon-save"></span> Save
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div ng-repeat="day in sortedDays" ng-init="notes = byDays[day]">
 
         <h4>{{ formatDate(day) }}</h4>
@@ -110,8 +62,7 @@
                 <span class="glyphicon glyphicon-eye-open" style="color: green" ng-if="note.inPublic"></span>
                 <span class="glyphicon glyphicon-eye-close" ng-if="!note.inPublic"></span>
 
-                <a href="javascript:void(0)"
-                   ng-click="updateDialog(note.id)">
+                <a href="#/note/{{note.id}}">
                     Edit
                 </a>
                 or
