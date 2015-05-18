@@ -3,8 +3,7 @@
         <div class="input-group">
 
             <div class="input-group-btn">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveNoteModal"
-                        ng-switch-when="true">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveNoteModal">
                     Create
                 </button>
             </div>
@@ -27,15 +26,15 @@
                 </button>
 
                 <ul class="dropdown-menu dropdown-menu-right" ng-controller="MenuController">
-                    <li ng-switch-when="true"><a href="#/settings"><span class="glyphicon glyphicon-wrench"></span>
+                    <li ng-show="authenticated"><a href="#/settings"><span class="glyphicon glyphicon-wrench"></span>
                         &nbsp;<span translate="global.menu.account.settings">Settings</span></a></li>
-                    <li ng-switch-when="true"><a href="#/password"><span class="glyphicon glyphicon-lock"></span>
+                    <li ng-show="authenticated"><a href="#/password"><span class="glyphicon glyphicon-lock"></span>
                         &nbsp;<span translate="global.menu.account.password">Password</span></a></li>
-                    <li ng-switch-when="true"><a href="#/sessions"><span class="glyphicon glyphicon-cloud"></span>
+                    <li ng-show="authenticated"><a href="#/sessions"><span class="glyphicon glyphicon-cloud"></span>
                         &nbsp;<span translate="global.menu.account.sessions">Sessions</span></a></li>
-                    <li ng-switch-when="true"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span>
+                    <li ng-show="authenticated"><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span>
                         &nbsp;<span translate="global.menu.account.logout">Log out</span></a></li>
-                    <li ng-switch-when="false"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
+                    <li ng-show="!authenticated"><a href="#/login"><span class="glyphicon glyphicon-log-in"></span>
                         &nbsp;<span translate="global.menu.account.login">Authenticate</span></a></li>
 
                     <!--<li ng-switch-when="false"><a href="#/register"><span class="glyphicon glyphicon-plus-sign"></span>-->

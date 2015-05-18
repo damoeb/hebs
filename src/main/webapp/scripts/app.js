@@ -139,8 +139,8 @@ hebsApp
             httpHeaders = $httpProvider.defaults.headers;
         })
         .run(function($rootScope, $location, $http, AuthenticationSharedService, Session, USER_ROLES) {
-                $rootScope.authenticated = undefined;
-                console.log('authenticated undefined');
+                $rootScope.authenticated = false;
+                console.log('authenticated false');
                 $rootScope.$on('$routeChangeStart', function (event, next) {
                     $rootScope.isAuthorized = AuthenticationSharedService.isAuthorized;
                     $rootScope.userRoles = USER_ROLES;
@@ -154,11 +154,11 @@ hebsApp
                     if ($location.path() === "/login" || _.isEmpty($location.path())) {
                         var search = $location.search();
                         if (search.redirect !== undefined) {
+                            console.log('redirect to redirect', search.redirect);
                             $location.path(search.redirect).search('redirect', null).replace();
                         } else {
-                            //$location.path('/u/'+Account.get().login).replace();
+                            console.log('redirect to user', Session.login);
                             $location.path('/u/' + Session.login).replace();
-                            //$location.path('/u/admin').replace();
                         }
                     }
                 });
