@@ -20,8 +20,19 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="container-fluid" ng-switch="authenticated">
-            <div ng-view=""></div>
+        <div ng-switch="authenticated">
+            <!--div class="col-lg-2">
+               <dl>
+                  <dt>Notebooks</dt>
+                  <dd><a href="#">Incoming</a> <span class="badge">12</span></dd>
+                  <dd class="active"><a href="#">All Notes</a></dd>
+                  <dd><a href="#">Private</a></dd>
+                  <dd><a href="#">Work</a></dd>
+               </dl>
+            </div>
+            <div class="col-lg-10"-->
+               <div class="container-fluid" ng-view=""></div>
+            <!--/div-->            
         </div>
 
         <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.

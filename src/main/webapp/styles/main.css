@@ -113,3 +113,8 @@ ul#strength {
     width:20px;
 }
 /* end Password strength bar style */
+
+.note-public {
+    border-left: 3px solid blue
+}
+

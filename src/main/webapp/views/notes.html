@@ -1,24 +1,29 @@
-<div class="row" ng-init="init()">
-    <div class="col-xs-12">
-        <div class="input-group">
+<div class="row" ng-init="init()" style="padding-top:5px; padding-bottom:5px; background-color: #dddddd; border-bottom:1px solid #b3b3b3">
 
-            <div class="input-group-btn">
-                <a href="#/note/new" class="btn btn-primary">
-                    Create
-                </a>
-            </div>
-            <!-- /btn-group -->
-
+    <div class="col-xs-5">
+        <a href="#/note/new" class="btn btn-default">
+            New Note
+        </a>
+    </div>
+    <div class="col-xs-2">
+      <div class="input-group">
             <form ng-submit="submitQuery()" class="input-group">
-                <input type="text" class="form-control" aria-label="..." name="query" placeholder="Type.."
+                <input type="text" class="form-control" aria-label="..." name="query" placeholder="Search notes"
                        ng-model="query" ng-keyup="changedQuery($event)">
-
-                <div class="input-group-btn">
-                    <input type="submit" class="btn btn-primary" value="Search"/>
-                </div>
+                 <div class="input-group-btn">                    
+                    <a href="javascript:void(0)" class="btn btn-default">
+                     <span class="glyphicon glyphicon-search"></span>
+                    </a>
+                 </div>
             </form>
+            
 
-            <div class="input-group-btn dropdown-menu-right">
+         </div>
+
+      </div>
+      
+      <div class="col-xs-5">        
+            <div class="pull-right dropdown-menu-right">
 
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
                         aria-expanded="false">
@@ -41,12 +46,14 @@
                     <!--&nbsp;<span translate="global.menu.account.register">Register</span></a></li>-->
                 </ul>
             </div>
-            <!-- /btn-group -->
 
         </div>
     </div>
 </div>
 
+<div>
+Breadcrumb
+</div>
 
 <div>
 
@@ -54,38 +61,40 @@
 
         <h4>{{ formatDate(day) }}</h4>
 
-        <li ng-repeat="note in notes">
-            <div style="white-space: pre-wrap">{{note.content}}</div>
+        <div ng-repeat="note in notes" class="panel panel-default"ng-class="{note.inPublic: 'note-public'}">
+            <div class="panel-body">
+                <div style="white-space: pre-wrap">{{note.content}}</div>
 
-            <div ng-show="authenticated" style="display: inline-block;">
+                <div ng-show="authenticated" style="display: inline-block;">
 
-                <span class="glyphicon glyphicon-eye-open" style="color: green" ng-if="note.inPublic"></span>
-                <span class="glyphicon glyphicon-eye-close" ng-if="!note.inPublic"></span>
+                    <span class="glyphicon glyphicon-eye-open" style="color: green" ng-if="note.inPublic"></span>
+                    <span class="glyphicon glyphicon-eye-close" ng-if="!note.inPublic"></span>
 
-                <a href="#/note/{{note.id}}">
-                    Edit
-                </a>
-                or
-                <a href="javascript:void(0)"
-                   ng-click="delete(note.id)">
-                    Delete
-                </a>
+                    <a href="#/note/{{note.id}}">
+                        Edit
+                    </a>
+                    or
+                    <a href="javascript:void(0)"
+                        ng-click="delete(note.id)">
+                        Delete
+                    </a>
+                </div>
             </div>
-        </li>
+        </div>
     </div>
 
-    <div>
-        <ul class="pagination">
-            <a href="#{{previousPageUrl()}}" aria-label="Previous"
-               ng-show="!$isFirstPage">
-                <span aria-hidden="true">Previous</span>
-            </a>
-
-            Page {{currentPage}}
-
-            <a href="#{{nextPageUrl()}}" aria-label="Next" ng-show="!$isLastPage">
-                <span aria-hidden="true">Next</span>
-            </a>
-    </div>
-
+    <nav>
+     <ul class="pager">
+       <li><a href="#{{previousPageUrl()}}" aria-label="Previous" ng-show="!$isFirstPage">
+         Previous</a></li>
+       <li class="active"><a href="#">{{currentPage}}</a></li>
+       <li><a href="#">2</a></li>
+       <li><a href="#">3</a></li>
+       <li><a href="#">4</a></li>
+       <li><a href="#">5</a></li>
+       <li><a href="#">6</a></li>
+       <li><a href="#{{nextPageUrl()}}" aria-label="Next" ng-show="!$isLastPage">Next</a></li>
+     </ul>
+   </nav>
+        
 </div>
